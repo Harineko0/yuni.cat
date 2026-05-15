@@ -1,0 +1,40 @@
+{
+  "name": "yuni-cat",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "react-router build",
+    "cf-typegen": "wrangler types",
+    "deploy": "react-router build && wrangler deploy",
+    "dev": "react-router dev",
+    "postinstall": "wrangler types",
+    "preview": "react-router build && vite preview",
+    "typecheck": "wrangler types && react-router typegen && tsc -b"
+  },
+  "dependencies": {
+    "@portabletext/react": "^6.2.0",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
+    "@sanity/client": "^7.22.0",
+    "@sanity/image-url": "^2.1.1",
+    "clsx": "^2.1.1",
+    "isbot": "^5.1.36",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-router": "7.15.1",
+    "three": "^0.184.0"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.29.1",
+    "@react-router/dev": "7.15.1",
+    "@tailwindcss/vite": "^4.2.2",
+    "@types/node": "^22",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@types/three": "^0.184.1",
+    "tailwindcss": "^4.2.2",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.3",
+    "wrangler": "^4.75.0"
+  }
+}

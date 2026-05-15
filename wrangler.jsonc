@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "yuni-cat",
+  "compatibility_date": "2025-04-04",
+  "main": "./workers/app.ts",
+  "vars": {
+    "SANITY_PROJECT_ID": "",
+    "SANITY_DATASET": "production",
+    "SANITY_API_VERSION": "2024-10-01"
+  },
+  "routes": [
+    { "pattern": "yuni.cat", "custom_domain": true }
+  ]
+}
