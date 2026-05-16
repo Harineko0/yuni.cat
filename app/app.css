@@ -230,9 +230,12 @@
     -webkit-text-stroke: 1.5px var(--color-yellow);
     text-stroke: 1.5px var(--color-yellow);
     text-shadow: none;
-    line-height: 1;
+    line-height: 1.05;
     margin-bottom: 1.2rem;
-    display: inline-block;
+    display: block;
+    max-width: 720px;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
   .work-card {
     display: block;
