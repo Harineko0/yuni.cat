@@ -94,6 +94,17 @@
     isolation: isolate;
     white-space: nowrap;
   }
+  @media (max-width: 640px) {
+    .nav-strip {
+      flex-wrap: wrap;
+      height: auto;
+    }
+    .nav-link {
+      flex: 0 0 33.3333%;
+      height: 64px;
+      font-size: 1.1rem;
+    }
+  }
   .nav-link-label {
     position: relative;
     z-index: 1;
