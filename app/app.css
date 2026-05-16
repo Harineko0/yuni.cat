@@ -172,6 +172,17 @@
     margin: clamp(0.4rem, 0.9vw, 0.8rem) 0;
     line-height: 1.4;
   }
+  @media (max-width: 640px) {
+    .about-block {
+      padding-top: clamp(5rem, 16vw, 8rem);
+    }
+    .about-block .about-body {
+      margin-top: clamp(3rem, 9vw, 5rem);
+    }
+    .about-block .mountain-wrap {
+      margin-top: clamp(7rem, 22vw, 12rem);
+    }
+  }
 
   /* ── Mountain horizon ── */
   .mountain-wrap {
