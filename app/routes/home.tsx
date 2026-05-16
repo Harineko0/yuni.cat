@@ -82,20 +82,22 @@ export default function Home({ loaderData }: Route.ComponentProps) {
     if (!nyan) return;
     const audio = audioRef.current;
     if (!audio) return;
-    const tryPlay = () => {
-      void audio.play().catch(() => {});
-    };
-    tryPlay();
+    audio.muted = true;
+    void audio.play().catch(() => {});
     const unlock = () => {
-      tryPlay();
+      audio.muted = false;
+      void audio.play().catch(() => {});
       window.removeEventListener("pointerdown", unlock);
       window.removeEventListener("keydown", unlock);
+      window.removeEventListener("touchstart", unlock);
     };
     window.addEventListener("pointerdown", unlock);
     window.addEventListener("keydown", unlock);
+    window.addEventListener("touchstart", unlock);
     return () => {
       window.removeEventListener("pointerdown", unlock);
       window.removeEventListener("keydown", unlock);
+      window.removeEventListener("touchstart", unlock);
     };
   }, [nyan]);
 
@@ -108,6 +110,8 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             src="/nyancat_original.mp3"
             autoPlay
             loop
+            muted
+            playsInline
             preload="auto"
           />
           <div className="nyan-strip" aria-hidden="true">
