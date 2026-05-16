@@ -615,7 +615,6 @@
     gap: 2rem;
     padding: clamp(0.8rem, 1.6vw, 1.4rem) 0;
     color: #fff;
-    flex-wrap: wrap;
   }
   .article-link {
     color: #fff;
@@ -624,6 +623,9 @@
     text-decoration-thickness: 1.5px;
     font-size: clamp(1rem, 1.7vw, 1.4rem);
     font-weight: 600;
+    flex: 1 1 0;
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
   .article-link:hover { color: #000; }
   .article-date {

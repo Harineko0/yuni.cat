@@ -9,7 +9,7 @@ import {
   type Variants,
 } from "motion/react";
 import type { Route } from "./+types/home";
-import { fetchLatestPosts, fetchLatestWorks } from "../lib/content.server";
+import { fetchAllWorks, fetchLatestPosts } from "../lib/content.server";
 import { buildMeta } from "../lib/meta";
 import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
@@ -43,7 +43,7 @@ export async function loader({ context }: Route.LoaderArgs) {
   >;
   const [posts, works] = await Promise.all([
     fetchLatestPosts(env, 8),
-    fetchLatestWorks(env, 6),
+    fetchAllWorks(env),
   ]);
   return { posts, works };
 }
