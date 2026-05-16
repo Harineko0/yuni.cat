@@ -4,11 +4,13 @@ import { useIntroReady } from "../lib/use-intro-ready";
 
 const NAV_LINKS = [
   { label: "ARTICLES", href: "#articles", external: false },
+  { label: "WORKS", href: "#works", external: false },
   { label: "GITHUB", id: "github" as const },
   { label: "TWITTER", id: "x" as const },
-  { label: "INSTAGRAM", href: "https://instagram.com/", external: true },
+  { label: "IG", href: "https://instagram.com/", external: true },
   { label: "ZENN", id: "zenn" as const },
   { label: "QIITA", id: "qiita" as const },
+  { label: "NYAN", href: "/?nyan", external: false },
 ];
 
 function resolve(item: typeof NAV_LINKS[number]) {

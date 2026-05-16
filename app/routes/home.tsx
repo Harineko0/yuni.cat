@@ -403,7 +403,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       </section>
 
       {/* ── WORKS ── */}
-      <section className="works-block">
+      <section id="works" className="works-block">
         <BackgroundLogoMarquee label={heroLabel} />
         <div ref={worksBannerRef} className="works-banner-track">
           <motion.div

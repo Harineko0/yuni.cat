@@ -90,10 +90,11 @@
   }
   .nav-link {
     position: relative;
-    flex: 1 1 0;
+    flex: 1 1 auto;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0 clamp(0.75rem, 1.6vw, 1.75rem);
     color: #000;
     text-decoration: none;
     font-size: clamp(1rem, 2.6vw, 2.4rem);
@@ -108,9 +109,10 @@
       height: auto;
     }
     .nav-link {
-      flex: 0 0 33.3333%;
+      flex: 0 0 25%;
       height: 64px;
       font-size: 1.1rem;
+      padding: 0 0.5rem;
     }
   }
   .nav-link-label {
