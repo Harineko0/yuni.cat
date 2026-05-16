@@ -6,9 +6,18 @@ import { Footer } from "../components/Footer";
 import { TiltCard } from "../components/motion/TiltCard";
 
 export function meta() {
+  const title = "Works · yuni.cat";
+  const description = "Selected works by Harineko.";
+  const url = "https://yuni.cat/works";
   return [
-    { title: "Works · yuni.cat" },
-    { name: "description", content: "Selected works by Harineko." },
+    { title },
+    { name: "description", content: description },
+    { property: "og:title", content: title },
+    { property: "og:description", content: description },
+    { property: "og:url", content: url },
+    { name: "twitter:title", content: title },
+    { name: "twitter:description", content: description },
+    { tagName: "link", rel: "canonical", href: url },
   ];
 }
 

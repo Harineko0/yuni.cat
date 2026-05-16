@@ -6,11 +6,31 @@ import { PortableTextRenderer } from "../components/PortableTextRenderer";
 import { Footer } from "../components/Footer";
 import { FadeUp } from "../components/motion/FadeUp";
 
-export function meta({ data: d }: Route.MetaArgs) {
+export function meta({ data: d, params }: Route.MetaArgs) {
   if (!d?.work) return [{ title: "Not found · yuni.cat" }];
+  const title = `${d.work.title} · works · yuni.cat`;
+  const description = d.work.summary ?? `${d.work.title} — a work on yuni.cat.`;
+  const url = `https://yuni.cat/works/${params.slug}`;
+  const image = d.work.coverImageUrl;
   return [
-    { title: `${d.work.title} · works · yuni.cat` },
-    { name: "description", content: d.work.summary ?? "" },
+    { title },
+    { name: "description", content: description },
+    { property: "og:type", content: "article" },
+    { property: "og:title", content: title },
+    { property: "og:description", content: description },
+    { property: "og:url", content: url },
+    { name: "twitter:title", content: title },
+    { name: "twitter:description", content: description },
+    ...(image
+      ? [
+          { property: "og:image", content: image },
+          { property: "og:image:secure_url", content: image },
+          { property: "og:image:alt", content: d.work.coverImage?.alt ?? d.work.title },
+          { name: "twitter:image", content: image },
+          { name: "twitter:image:alt", content: d.work.coverImage?.alt ?? d.work.title },
+        ]
+      : []),
+    { tagName: "link", rel: "canonical", href: url },
   ];
 }
 

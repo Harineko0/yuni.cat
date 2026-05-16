@@ -8,9 +8,19 @@ import { Footer } from "../components/Footer";
 import { ScrollCat } from "../components/ScrollCat";
 
 export function meta() {
+  const title = "yuni.cat";
+  const description =
+    "Portfolio of Harineko — student at the University of Osaka and software engineer.";
+  const url = "https://yuni.cat/";
   return [
-    { title: "yuni.cat" },
-    { name: "description", content: "Portfolio of Harineko." },
+    { title },
+    { name: "description", content: description },
+    { property: "og:title", content: title },
+    { property: "og:description", content: description },
+    { property: "og:url", content: url },
+    { name: "twitter:title", content: title },
+    { name: "twitter:description", content: description },
+    { tagName: "link", rel: "canonical", href: url },
   ];
 }
 

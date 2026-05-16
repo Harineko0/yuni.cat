@@ -5,9 +5,18 @@ import { fetchAllPosts } from "../lib/content.server";
 import { Footer } from "../components/Footer";
 
 export function meta() {
+  const title = "Articles · yuni.cat";
+  const description = "Articles and notes by Harineko.";
+  const url = "https://yuni.cat/blog";
   return [
-    { title: "Articles · yuni.cat" },
-    { name: "description", content: "Articles by Harineko." },
+    { title },
+    { name: "description", content: description },
+    { property: "og:title", content: title },
+    { property: "og:description", content: description },
+    { property: "og:url", content: url },
+    { name: "twitter:title", content: title },
+    { name: "twitter:description", content: description },
+    { tagName: "link", rel: "canonical", href: url },
   ];
 }
 

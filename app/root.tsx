@@ -11,8 +11,17 @@ import type { Route } from "./+types/root";
 import { RouteTransition } from "./components/RouteTransition";
 import "./app.css";
 
+export const SITE_URL = "https://yuni.cat";
+export const OGP_IMAGE = `${SITE_URL}/ogp.png`;
+export const OGP_IMAGE_WIDTH = "2560";
+export const OGP_IMAGE_HEIGHT = "1360";
+const DEFAULT_TITLE = "yuni.cat";
+const DEFAULT_DESCRIPTION =
+  "Portfolio of Harineko — student at the University of Osaka and software engineer.";
+
 export const links: Route.LinksFunction = () => [
   { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+  { rel: "canonical", href: SITE_URL },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
   {
@@ -21,17 +30,35 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
+export const meta: Route.MetaFunction = () => [
+  { title: DEFAULT_TITLE },
+  { name: "description", content: DEFAULT_DESCRIPTION },
+  { property: "og:site_name", content: "yuni.cat" },
+  { property: "og:type", content: "website" },
+  { property: "og:locale", content: "ja_JP" },
+  { property: "og:locale:alternate", content: "en_US" },
+  { property: "og:title", content: DEFAULT_TITLE },
+  { property: "og:description", content: DEFAULT_DESCRIPTION },
+  { property: "og:url", content: SITE_URL },
+  { property: "og:image", content: OGP_IMAGE },
+  { property: "og:image:secure_url", content: OGP_IMAGE },
+  { property: "og:image:type", content: "image/png" },
+  { property: "og:image:width", content: OGP_IMAGE_WIDTH },
+  { property: "og:image:height", content: OGP_IMAGE_HEIGHT },
+  { property: "og:image:alt", content: "yuni.cat — Harineko's portfolio" },
+  { name: "twitter:card", content: "summary_large_image" },
+  { name: "twitter:title", content: DEFAULT_TITLE },
+  { name: "twitter:description", content: DEFAULT_DESCRIPTION },
+  { name: "twitter:image", content: OGP_IMAGE },
+  { name: "twitter:image:alt", content: "yuni.cat — Harineko's portfolio" },
+];
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ja">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="yuni.cat — portfolio." />
-        <meta property="og:title" content="yuni.cat" />
-        <meta property="og:description" content="Personal portfolio" />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://yuni.cat" />
         <meta name="theme-color" content="#d827c0" />
         <Meta />
         <Links />

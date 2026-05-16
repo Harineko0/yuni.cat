@@ -7,11 +7,36 @@ import { Footer } from "../components/Footer";
 import { FadeUp } from "../components/motion/FadeUp";
 import { data } from "react-router";
 
-export function meta({ data: d }: Route.MetaArgs) {
+export function meta({ data: d, params }: Route.MetaArgs) {
   if (!d?.post) return [{ title: "Not found · yuni.cat" }];
+  const title = `${d.post.title} · yuni.cat`;
+  const description = d.post.excerpt ?? `${d.post.title} — an article on yuni.cat.`;
+  const url = `https://yuni.cat/blog/${params.slug}`;
+  const image = d.post.coverImageUrl;
   return [
-    { title: `${d.post.title} · yuni.cat` },
-    { name: "description", content: d.post.excerpt ?? "" },
+    { title },
+    { name: "description", content: description },
+    { property: "og:type", content: "article" },
+    { property: "og:title", content: title },
+    { property: "og:description", content: description },
+    { property: "og:url", content: url },
+    { property: "article:published_time", content: d.post.publishedAt },
+    ...(d.post.tags?.map((tag) => ({
+      property: "article:tag",
+      content: tag,
+    })) ?? []),
+    { name: "twitter:title", content: title },
+    { name: "twitter:description", content: description },
+    ...(image
+      ? [
+          { property: "og:image", content: image },
+          { property: "og:image:secure_url", content: image },
+          { property: "og:image:alt", content: d.post.coverImage?.alt ?? d.post.title },
+          { name: "twitter:image", content: image },
+          { name: "twitter:image:alt", content: d.post.coverImage?.alt ?? d.post.title },
+        ]
+      : []),
+    { tagName: "link", rel: "canonical", href: url },
   ];
 }
 

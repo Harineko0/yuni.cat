@@ -46,6 +46,7 @@ export type BlogPost = {
   readingTime?: number;
   tags?: string[];
   coverImage?: SanityImage;
+  coverImageUrl?: string;
   body?: PortableTextBlock[];
 };
 
@@ -72,7 +73,8 @@ export const queries = {
     _id, title, "slug": slug.current, excerpt, publishedAt, readingTime, tags, coverImage
   }`,
   postBySlug: /* groq */ `*[_type == "post" && slug.current == $slug][0]{
-    _id, title, "slug": slug.current, excerpt, publishedAt, readingTime, tags, coverImage, body
+    _id, title, "slug": slug.current, excerpt, publishedAt, readingTime, tags,
+    coverImage, "coverImageUrl": coverImage.asset->url, body
   }`,
   latestWorks: /* groq */ `*[_type == "work"] | order(year desc, _createdAt desc)[0...$limit]{
     _id, title, "slug": slug.current, summary, year, role, tech, url, repo,
