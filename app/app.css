@@ -9,10 +9,10 @@
   --color-lime: #b6ff3a;
   --color-white: #ffffff;
 
-  --font-compressed: "Helvetica Compressed", "Helvetica Inserat", "Helvetica Neue Condensed", "Haettenschweiler", "Impact", sans-serif;
-  --font-compacta: "Compacta", "Helvetica Inserat", "Haettenschweiler", "Impact", sans-serif;
-  --font-hand: "HanziPen SC", "Bradley Hand", "Marker Felt", "Comic Sans MS", cursive;
-  --font-jp: "Helvetica", "Helvetica Neue", "Hiragino Kaku Gothic Pro", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --font-compressed: "Helvetica Compressed", "Helvetica Inserat", "Helvetica Neue Condensed", "Haettenschweiler", "Impact", "Anton", sans-serif;
+  --font-compacta: "Compacta", "Helvetica Inserat", "Haettenschweiler", "Impact", "Anton", sans-serif;
+  --font-hand: "HanziPen SC", "Bradley Hand", "Marker Felt", "Caveat", "Comic Sans MS", cursive;
+  --font-jp: "Helvetica", "Helvetica Neue", "Hiragino Kaku Gothic Pro", "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
 }
 
 @layer base {
