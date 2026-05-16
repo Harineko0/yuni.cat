@@ -30,8 +30,6 @@ export function getImageBuilder(env?: Env) {
   return createImageUrlBuilder(getSanityClient(env));
 }
 
-export type PortableTextBlock = unknown;
-
 export type SanityImage = {
   asset?: { _ref?: string; _id?: string; url?: string };
   alt?: string;
@@ -47,7 +45,7 @@ export type BlogPost = {
   tags?: string[];
   coverImage?: SanityImage;
   coverImageUrl?: string;
-  body?: PortableTextBlock[];
+  body?: string;
 };
 
 export type Work = {
@@ -62,7 +60,7 @@ export type Work = {
   repo?: string;
   coverImage?: SanityImage;
   coverImageUrl?: string;
-  body?: PortableTextBlock[];
+  body?: string;
 };
 
 export const queries = {

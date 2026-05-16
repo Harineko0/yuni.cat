@@ -19,14 +19,7 @@ export const work = defineType({
       options: { hotspot: true },
       fields: [{ name: "alt", type: "string" }],
     }),
-    defineField({
-      name: "body",
-      type: "array",
-      of: [
-        { type: "block" },
-        { type: "image", options: { hotspot: true }, fields: [{ name: "alt", type: "string" }] },
-      ],
-    }),
+    defineField({ name: "body", type: "markdown" }),
   ],
   preview: { select: { title: "title", subtitle: "year" } },
 });

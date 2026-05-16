@@ -20,20 +20,22 @@ const EDGE_PAD = 16;
 
 const SPRING = { stiffness: 380, damping: 32, mass: 0.5 };
 
-type PortableTextSpan = { text?: unknown };
-type PortableTextBlock = { _type?: unknown; children?: unknown };
-
-function portableTextToPlain(value: unknown): string {
-  if (!Array.isArray(value)) return "";
+function markdownToPlain(value: unknown): string {
+  if (typeof value !== "string") return "";
   return value
-    .map((block) => {
-      const b = block as PortableTextBlock;
-      if (!b || b._type !== "block" || !Array.isArray(b.children)) return "";
-      return (b.children as PortableTextSpan[])
-        .map((c) => (typeof c?.text === "string" ? c.text : ""))
-        .join("");
-    })
-    .filter((line) => line.length > 0)
+    .replace(/```[\s\S]*?```/g, "")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/^\s{0,3}#{1,6}\s+/gm, "")
+    .replace(/^\s{0,3}>\s?/gm, "")
+    .replace(/^\s*[-*+]\s+/gm, "")
+    .replace(/^\s*\d+\.\s+/gm, "")
+    .replace(/(\*\*|__)(.*?)\1/g, "$2")
+    .replace(/(\*|_)(.*?)\1/g, "$2")
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0)
     .join("\n");
 }
 
@@ -104,7 +106,7 @@ export function WorkHoverCard({ work }: Props) {
             <p className="work-hover-card__summary font-jp">{work.summary}</p>
           ) : null}
           {(() => {
-            const bodyText = portableTextToPlain(work.body);
+            const bodyText = markdownToPlain(work.body);
             return bodyText ? (
               <p className="work-hover-card__body font-jp">{bodyText}</p>
             ) : null;

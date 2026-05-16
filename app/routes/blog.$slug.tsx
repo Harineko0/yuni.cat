@@ -3,7 +3,7 @@ import { motion, type Variants } from "motion/react";
 import type { Route } from "./+types/blog.$slug";
 import { fetchPostBySlug } from "../lib/content.server";
 import { buildMeta } from "../lib/meta";
-import { PortableTextRenderer } from "../components/PortableTextRenderer";
+import { MarkdownRenderer } from "../components/MarkdownRenderer";
 import { Footer } from "../components/Footer";
 import { FadeUp } from "../components/motion/FadeUp";
 import { data } from "react-router";
@@ -129,7 +129,7 @@ export default function BlogDetail({ loaderData }: Route.ComponentProps) {
 
         <FadeUp className="page-prose font-jp" delay={0.2}>
           {post.body ? (
-            <PortableTextRenderer value={post.body} />
+            <MarkdownRenderer value={post.body} />
           ) : (
             <p style={{ color: "#888" }}>準備中…</p>
           )}

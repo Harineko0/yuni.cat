@@ -22,28 +22,7 @@ export const post = defineType({
       options: { hotspot: true },
       fields: [{ name: "alt", type: "string", title: "Alt text" }],
     }),
-    defineField({
-      name: "body",
-      title: "Body",
-      type: "array",
-      of: [
-        { type: "block" },
-        {
-          type: "image",
-          options: { hotspot: true },
-          fields: [{ name: "alt", type: "string", title: "Alt text" }],
-        },
-        {
-          type: "object",
-          name: "code",
-          title: "Code block",
-          fields: [
-            { name: "language", type: "string" },
-            { name: "code", type: "text" },
-          ],
-        },
-      ],
-    }),
+    defineField({ name: "body", title: "Body", type: "markdown" }),
   ],
   preview: {
     select: { title: "title", subtitle: "publishedAt" },

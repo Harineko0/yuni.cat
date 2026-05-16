@@ -3,7 +3,7 @@ import { motion, type Variants } from "motion/react";
 import type { Route } from "./+types/works.$slug";
 import { fetchWorkBySlug } from "../lib/content.server";
 import { buildMeta } from "../lib/meta";
-import { PortableTextRenderer } from "../components/PortableTextRenderer";
+import { MarkdownRenderer } from "../components/MarkdownRenderer";
 import { Footer } from "../components/Footer";
 import { FadeUp } from "../components/motion/FadeUp";
 
@@ -151,7 +151,7 @@ export default function WorkDetail({ loaderData }: Route.ComponentProps) {
 
         <FadeUp className="page-prose font-jp" delay={0.2}>
           {work.body ? (
-            <PortableTextRenderer value={work.body} />
+            <MarkdownRenderer value={work.body} />
           ) : (
             <p style={{ color: "#888" }}>準備中…</p>
           )}
