@@ -1,6 +1,5 @@
-import { useRef } from "react";
 import { Link } from "react-router";
-import { motion, useScroll, useTransform, type Variants } from "motion/react";
+import { motion, type Variants } from "motion/react";
 import type { Route } from "./+types/home";
 import { fetchLatestPosts, fetchLatestWorks } from "../lib/content.server";
 import { Nav } from "../components/Nav";
@@ -76,13 +75,6 @@ const articleRowVariants: Variants = {
 export default function Home({ loaderData }: Route.ComponentProps) {
   const { posts, works } = loaderData;
 
-  const aboutRef = useRef<HTMLElement>(null);
-  const { scrollYProgress: aboutProgress } = useScroll({
-    target: aboutRef,
-    offset: ["start end", "end start"],
-  });
-  const aboutY = useTransform(aboutProgress, [0, 1], [60, -60]);
-
   return (
     <main>
       {/* ── HERO ── */}
@@ -128,7 +120,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       <Nav />
 
       {/* ── ABOUT ── */}
-      <section className="about-block" ref={aboutRef}>
+      <section className="about-block">
         <motion.h2
           className="about-title font-compacta"
           initial={{ opacity: 0, x: -80 }}
@@ -138,41 +130,15 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         >
           About
         </motion.h2>
-        <motion.div className="about-body font-hand" style={{ y: aboutY }}>
-          <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10% 0px" }}
-            transition={{ delay: 0.05 }}
-          >
+        <div className="about-body font-hand">
+          <p>
             Student at University of Osaka, Faculty of Engineering Science,
             Department of Information Science
-          </motion.p>
-          <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10% 0px" }}
-            transition={{ delay: 0.12 }}
-          >
-            Web, Mobile, Backend Software Engineer at startup companies
-          </motion.p>
-          <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10% 0px" }}
-            transition={{ delay: 0.18 }}
-          >
-            Ex-Organizer, Google Developer Group on Campus University of Osaka
-          </motion.p>
-          <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10% 0px" }}
-            transition={{ delay: 0.24 }}
-          >
-            anti-OOP
-          </motion.p>
-        </motion.div>
+          </p>
+          <p>Web, Mobile, Backend Software Engineer at startup companies</p>
+          <p>Ex-Organizer, Google Developer Group on Campus University of Osaka</p>
+          <p>anti-OOP</p>
+        </div>
         <div className="mountain-wrap">
           <ScrollCat />
           <img
