@@ -410,15 +410,48 @@
     position: absolute;
     bottom: 55%;
     left: clamp(2%, 6vw, 9%);
+    z-index: 2;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(2px, 0.8vw, 8px);
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nyan-mountain-cat img {
+    display: block;
     width: clamp(80px, 12vw, 180px);
     height: auto;
     image-rendering: pixelated;
-    z-index: 2;
+  }
+  .nyan-mountain-cat:active img {
+    transform: translateY(2px);
   }
   @media (min-width: 641px) {
     .nyan-mountain-cat {
       bottom: 70%;
     }
+  }
+
+  .nyan-tap-me {
+    font-family: var(--font-pixel);
+    font-size: clamp(1.4rem, 3.4vw, 2.8rem);
+    font-weight: 700;
+    color: #b6ff3a;
+    -webkit-text-stroke: 2px #000;
+    paint-order: stroke fill;
+    white-space: nowrap;
+    transform: rotate(-8deg);
+    transform-origin: center;
+    animation: nyan-tap-bob 0.7s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+  @keyframes nyan-tap-bob {
+    from { transform: rotate(-8deg) translateY(0); }
+    to   { transform: rotate(-8deg) translateY(-5px); }
   }
 
   .nyan-strip {

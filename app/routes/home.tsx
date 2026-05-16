@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import { motion, type Variants } from "motion/react";
 import type { Route } from "./+types/home";
@@ -77,6 +77,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   const nyan = searchParams.has("nyan");
   const heroLabel = nyan ? "nyan.cat" : "yunineko/cat";
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [audioUnlocked, setAudioUnlocked] = useState(false);
 
   useEffect(() => {
     if (!nyan) return;
@@ -87,6 +88,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
     const unlock = () => {
       audio.muted = false;
       void audio.play().catch(() => {});
+      setAudioUnlocked(true);
       window.removeEventListener("pointerdown", unlock);
       window.removeEventListener("keydown", unlock);
       window.removeEventListener("touchstart", unlock);
@@ -194,12 +196,18 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         <div className="mountain-wrap">
           <ScrollCat />
           {nyan ? (
-            <img
-              src="/nyancat_original.gif"
-              alt=""
+            <button
+              type="button"
               className="nyan-mountain-cat"
-              aria-hidden="true"
-            />
+              aria-label="Play nyan music"
+            >
+              {!audioUnlocked ? (
+                <span className="nyan-tap-me" aria-hidden="true">
+                  {String.raw`\TAP ME!/`}
+                </span>
+              ) : null}
+              <img src="/nyancat_original.gif" alt="" aria-hidden="true" />
+            </button>
           ) : null}
           <img
             src="/mountain.svg"
