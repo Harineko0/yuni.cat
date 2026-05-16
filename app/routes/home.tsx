@@ -8,12 +8,17 @@ import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
 import { ScrollCat } from "../components/ScrollCat";
 
-export function meta() {
+export function meta({ location }: Route.MetaArgs) {
+  const nyan = new URLSearchParams(location.search).has("nyan");
   return buildMeta({
-    title: "yuni.cat",
+    title: nyan ? "nyan.cat" : "yuni.cat",
     description:
       "Portfolio of Harineko — student at the University of Osaka and software engineer.",
-    path: "/",
+    path: nyan ? "/?nyan" : "/",
+    image: nyan ? "https://yuni.cat/ogp_nyan.png" : undefined,
+    imageWidth: nyan ? 2560 : undefined,
+    imageHeight: nyan ? 1360 : undefined,
+    imageAlt: nyan ? "nyan.cat" : undefined,
   });
 }
 
