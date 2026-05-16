@@ -675,12 +675,20 @@
     line-height: 1.7;
   }
   .page-prose a { color: var(--color-lime); text-decoration: underline; }
+  .page-prose h1 { color: var(--color-yellow); font-size: 2rem; margin: 2.4rem 0 1rem; font-weight: 700; }
   .page-prose h2 { color: var(--color-yellow); font-size: 1.6rem; margin: 2rem 0 0.8rem; font-weight: 700; }
   .page-prose h3 { color: var(--color-yellow); font-size: 1.3rem; margin: 1.6rem 0 0.6rem; font-weight: 700; }
   .page-prose p { margin: 0.9rem 0; }
   .page-prose code { background: #1a1a1a; padding: 0.1rem 0.35rem; border-radius: 3px; }
   .page-prose pre { background: #111; padding: 1rem; border-radius: 6px; overflow-x: auto; }
+  .page-prose pre code { background: transparent; padding: 0; }
   .page-prose ul { padding-left: 1.4rem; list-style: disc; }
+  .page-prose ol { padding-left: 1.4rem; list-style: decimal; }
+  .page-prose li { margin: 0.3rem 0; }
+  .page-prose blockquote { margin: 1.5rem 0; padding-left: 1rem; border-left: 3px solid var(--color-pink); color: #ccc; font-style: italic; }
+  .page-prose img { display: block; max-width: 100%; height: auto; border-radius: 12px; margin: 1.5rem auto; }
+  .page-prose strong { font-weight: 700; color: var(--color-mint); }
+  .page-prose hr { border: 0; border-top: 1px solid #333; margin: 2rem 0; }
 
   /* ── Nyan mode ── */
   .nyan-mode,
