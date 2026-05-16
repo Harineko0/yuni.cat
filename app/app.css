@@ -1,4 +1,5 @@
 @import "tailwindcss" source(".");
+@import "locomotive-scroll/dist/locomotive-scroll.css";
 
 @theme {
   --color-bg-black: #000000;
@@ -24,7 +25,7 @@
     font-family: var(--font-jp);
     margin: 0;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
   * { box-sizing: border-box; }
 
@@ -109,7 +110,7 @@
       height: auto;
     }
     .nav-link {
-      flex: 0 0 25%;
+      flex: 1 1 auto;
       height: 64px;
       font-size: 1.1rem;
       padding: 0 0.5rem;

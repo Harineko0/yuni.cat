@@ -1,8 +1,8 @@
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
-import imageUrlBuilder from "@sanity/image-url";
+import { createImageUrlBuilder } from "@sanity/image-url";
 import { getSanityClient } from "../lib/sanity";
 
-const builder = imageUrlBuilder(getSanityClient());
+const builder = createImageUrlBuilder(getSanityClient());
 
 const components: PortableTextComponents = {
   block: {

@@ -1,5 +1,5 @@
 import { createClient, type SanityClient } from "@sanity/client";
-import imageUrlBuilder from "@sanity/image-url";
+import { createImageUrlBuilder } from "@sanity/image-url";
 
 type Env = {
   SANITY_PROJECT_ID?: string;
@@ -27,7 +27,7 @@ export function getSanityClient(env?: Env): SanityClient {
 }
 
 export function getImageBuilder(env?: Env) {
-  return imageUrlBuilder(getSanityClient(env));
+  return createImageUrlBuilder(getSanityClient(env));
 }
 
 export type PortableTextBlock = unknown;

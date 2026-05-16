@@ -7,18 +7,22 @@ const NAV_LINKS = [
   { label: "WORKS", href: "#works", external: false },
   { label: "GITHUB", id: "github" as const },
   { label: "TWITTER", id: "x" as const },
-  { label: "IG", href: "https://instagram.com/", external: true },
+  { label: "INSTAGRAM", href: "https://instagram.com/", external: true },
+  { label: "LINKEDIN", id: "linkedin" as const },
   { label: "ZENN", id: "zenn" as const },
   { label: "QIITA", id: "qiita" as const },
   { label: "NYAN", href: "/?nyan", external: false },
 ];
 
-function resolve(item: typeof NAV_LINKS[number]) {
+function resolve(item: (typeof NAV_LINKS)[number]) {
   if ("id" in item && item.id) {
     const s = personal.socials.find((s) => s.id === item.id);
     return { href: s?.url ?? "#", external: true };
   }
-  return { href: (item as { href: string }).href, external: (item as { external?: boolean }).external ?? false };
+  return {
+    href: (item as { href: string }).href,
+    external: (item as { external?: boolean }).external ?? false,
+  };
 }
 
 const navContainer: Variants = {

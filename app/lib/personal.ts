@@ -20,6 +20,7 @@ export const personal = {
   socials: [
     { id: "github", label: "GitHub", handle: "Harineko0", url: "https://github.com/Harineko0" },
     { id: "x", label: "X / Twitter", handle: "@harineko_univ", url: "https://twitter.com/harineko_univ" },
+    { id: "linkedin", label: "LinkedIn", handle: "sota-suyama", url: "https://www.linkedin.com/in/sota-suyama-375a75302/" },
     { id: "qiita", label: "Qiita", handle: "harineko0", url: "https://qiita.com/harineko0" },
     { id: "zenn", label: "Zenn", handle: "harineko", url: "https://zenn.dev/harineko" },
     { id: "sizu", label: "sizu.me", handle: "harineko", url: "https://sizu.me/harineko" },
