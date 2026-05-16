@@ -13,6 +13,7 @@
   --font-compacta: "Compacta", "Helvetica Inserat", "Haettenschweiler", "Impact", "Anton", sans-serif;
   --font-hand: "HanziPen SC", "Bradley Hand", "Marker Felt", "Caveat", "Comic Sans MS", cursive;
   --font-jp: "Helvetica", "Helvetica Neue", "Hiragino Kaku Gothic Pro", "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+  --font-pixel: "Silkscreen", "Press Start 2P", "VT323", "Courier New", monospace;
 }
 
 @layer base {
@@ -371,4 +372,82 @@
   .page-prose code { background: #1a1a1a; padding: 0.1rem 0.35rem; border-radius: 3px; }
   .page-prose pre { background: #111; padding: 1rem; border-radius: 6px; overflow-x: auto; }
   .page-prose ul { padding-left: 1.4rem; list-style: disc; }
+
+  /* ── Nyan mode ── */
+  .nyan-mode,
+  .nyan-mode .font-compressed,
+  .nyan-mode .font-compacta,
+  .nyan-mode .font-hand,
+  .nyan-mode .font-jp {
+    font-family: var(--font-pixel) !important;
+    font-stretch: normal;
+    letter-spacing: 0;
+  }
+  .nyan-mode .hero-svg text {
+    font-family: var(--font-pixel);
+    letter-spacing: 0;
+  }
+  .nyan-mode .hero-block {
+    background: #0f4d8f;
+  }
+  .nyan-mode .about-block {
+    background: #0f4d8f;
+  }
+  .nyan-mode .articles-block {
+    background: #0f4d8f;
+  }
+  .nyan-mode .articles-block::before {
+    background-color: #000;
+  }
+  .nyan-mode .site-footer {
+    background: #0f4d8f;
+  }
+  .nyan-mode .work-item-title {
+    -webkit-text-stroke-width: 1px;
+  }
+
+  .nyan-mountain-cat {
+    position: absolute;
+    bottom: 55%;
+    left: clamp(2%, 6vw, 9%);
+    width: clamp(80px, 12vw, 180px);
+    height: auto;
+    image-rendering: pixelated;
+    z-index: 2;
+  }
+  @media (min-width: 641px) {
+    .nyan-mountain-cat {
+      bottom: 70%;
+    }
+  }
+
+  .nyan-strip {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: clamp(60px, 9vw, 110px);
+    background: #0f4d8f;
+    overflow: hidden;
+    z-index: 50;
+    pointer-events: none;
+    border-top: 2px solid #000;
+  }
+  .nyan-strip-track {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: max-content;
+    animation: nyan-scroll 8s linear infinite;
+  }
+  .nyan-strip-cat {
+    height: 90%;
+    width: auto;
+    margin-right: clamp(40px, 8vw, 120px);
+    image-rendering: pixelated;
+  }
+  @keyframes nyan-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
 }

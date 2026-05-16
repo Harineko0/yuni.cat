@@ -1,26 +1,20 @@
-import { Link } from "react-router";
+import { useEffect, useRef } from "react";
+import { Link, useSearchParams } from "react-router";
 import { motion, type Variants } from "motion/react";
 import type { Route } from "./+types/home";
 import { fetchLatestPosts, fetchLatestWorks } from "../lib/content.server";
+import { buildMeta } from "../lib/meta";
 import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
 import { ScrollCat } from "../components/ScrollCat";
 
 export function meta() {
-  const title = "yuni.cat";
-  const description =
-    "Portfolio of Harineko — student at the University of Osaka and software engineer.";
-  const url = "https://yuni.cat/";
-  return [
-    { title },
-    { name: "description", content: description },
-    { property: "og:title", content: title },
-    { property: "og:description", content: description },
-    { property: "og:url", content: url },
-    { name: "twitter:title", content: title },
-    { name: "twitter:description", content: description },
-    { tagName: "link", rel: "canonical", href: url },
-  ];
+  return buildMeta({
+    title: "yuni.cat",
+    description:
+      "Portfolio of Harineko — student at the University of Osaka and software engineer.",
+    path: "/",
+  });
 }
 
 export async function loader({ context }: Route.LoaderArgs) {
@@ -74,17 +68,66 @@ const articleRowVariants: Variants = {
 
 export default function Home({ loaderData }: Route.ComponentProps) {
   const { posts, works } = loaderData;
+  const [searchParams] = useSearchParams();
+  const nyan = searchParams.has("nyan");
+  const heroLabel = nyan ? "nyan.cat" : "yunineko/cat";
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    if (!nyan) return;
+    const audio = audioRef.current;
+    if (!audio) return;
+    const tryPlay = () => {
+      void audio.play().catch(() => {});
+    };
+    tryPlay();
+    const unlock = () => {
+      tryPlay();
+      window.removeEventListener("pointerdown", unlock);
+      window.removeEventListener("keydown", unlock);
+    };
+    window.addEventListener("pointerdown", unlock);
+    window.addEventListener("keydown", unlock);
+    return () => {
+      window.removeEventListener("pointerdown", unlock);
+      window.removeEventListener("keydown", unlock);
+    };
+  }, [nyan]);
 
   return (
-    <main>
+    <main className={nyan ? "nyan-mode" : undefined}>
+      {nyan ? (
+        <>
+          <audio
+            ref={audioRef}
+            src="/nyancat_original.mp3"
+            autoPlay
+            loop
+            preload="auto"
+          />
+          <div className="nyan-strip" aria-hidden="true">
+            <div className="nyan-strip-track">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <img
+                  key={i}
+                  src="/nyancat_original.gif"
+                  alt=""
+                  className="nyan-strip-cat"
+                />
+              ))}
+            </div>
+          </div>
+        </>
+      ) : null}
+
       {/* ── HERO ── */}
-      <section className="hero-block" aria-label="yunineko/cat">
+      <section className="hero-block" aria-label={heroLabel}>
         <svg
           className="hero-svg"
           viewBox="0 0 1000 150"
           preserveAspectRatio="xMidYMid slice"
           role="img"
-          aria-label="yunineko/cat"
+          aria-label={heroLabel}
         >
           <text
             x="500"
@@ -98,7 +141,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             fill="#b6ff3a"
             transform="translate(7 -5)"
           >
-            yunineko/cat
+            {heroLabel}
           </text>
           <text
             x="500"
@@ -111,7 +154,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             fontWeight="900"
             fill="#000"
           >
-            yunineko/cat
+            {heroLabel}
           </text>
         </svg>
       </section>
@@ -141,6 +184,14 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         </div>
         <div className="mountain-wrap">
           <ScrollCat />
+          {nyan ? (
+            <img
+              src="/nyancat_original.gif"
+              alt=""
+              className="nyan-mountain-cat"
+              aria-hidden="true"
+            />
+          ) : null}
           <img
             src="/mountain.svg"
             alt=""

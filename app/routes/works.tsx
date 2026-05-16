@@ -2,23 +2,16 @@ import { Link } from "react-router";
 import { motion, type Variants } from "motion/react";
 import type { Route } from "./+types/works";
 import { fetchAllWorks } from "../lib/content.server";
+import { buildMeta } from "../lib/meta";
 import { Footer } from "../components/Footer";
 import { TiltCard } from "../components/motion/TiltCard";
 
 export function meta() {
-  const title = "Works · yuni.cat";
-  const description = "Selected works by Harineko.";
-  const url = "https://yuni.cat/works";
-  return [
-    { title },
-    { name: "description", content: description },
-    { property: "og:title", content: title },
-    { property: "og:description", content: description },
-    { property: "og:url", content: url },
-    { name: "twitter:title", content: title },
-    { name: "twitter:description", content: description },
-    { tagName: "link", rel: "canonical", href: url },
-  ];
+  return buildMeta({
+    title: "Works · yuni.cat",
+    description: "Selected works by Harineko.",
+    path: "/works",
+  });
 }
 
 export async function loader({ context }: Route.LoaderArgs) {

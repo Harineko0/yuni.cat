@@ -2,22 +2,15 @@ import { Link } from "react-router";
 import { motion, type Variants } from "motion/react";
 import type { Route } from "./+types/blog";
 import { fetchAllPosts } from "../lib/content.server";
+import { buildMeta } from "../lib/meta";
 import { Footer } from "../components/Footer";
 
 export function meta() {
-  const title = "Articles · yuni.cat";
-  const description = "Articles and notes by Harineko.";
-  const url = "https://yuni.cat/blog";
-  return [
-    { title },
-    { name: "description", content: description },
-    { property: "og:title", content: title },
-    { property: "og:description", content: description },
-    { property: "og:url", content: url },
-    { name: "twitter:title", content: title },
-    { name: "twitter:description", content: description },
-    { tagName: "link", rel: "canonical", href: url },
-  ];
+  return buildMeta({
+    title: "Articles · yuni.cat",
+    description: "Articles and notes by Harineko.",
+    path: "/blog",
+  });
 }
 
 export async function loader({ context }: Route.LoaderArgs) {
