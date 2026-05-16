@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { markIntroReady } from "../lib/use-intro-ready";
 
 const STEP_COUNT = 9;
 const STEP_INTERVAL = 0.12;
@@ -10,7 +11,10 @@ export function LoadingScreen() {
 
   useEffect(() => {
     const total = (STEP_COUNT * STEP_INTERVAL + HOLD_AFTER_LAST) * 1000;
-    const t = setTimeout(() => setVisible(false), total);
+    const t = setTimeout(() => {
+      setVisible(false);
+      markIntroReady();
+    }, total);
     return () => clearTimeout(t);
   }, []);
 

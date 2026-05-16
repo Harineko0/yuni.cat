@@ -1,11 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router";
-import { motion, useScroll, useTransform, type Variants } from "motion/react";
+import {
+  animate,
+  motion,
+  useMotionValue,
+  useScroll,
+  useTransform,
+  type Variants,
+} from "motion/react";
 import type { Route } from "./+types/home";
 import { fetchLatestPosts, fetchLatestWorks } from "../lib/content.server";
 import { buildMeta } from "../lib/meta";
 import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
+import { useIntroReady } from "../lib/use-intro-ready";
 import { ScrollCat } from "../components/ScrollCat";
 import { ScrollMountain } from "../components/ScrollMountain";
 import { BackgroundLogoMarquee } from "../components/BackgroundLogoMarquee";
@@ -51,6 +59,50 @@ const articleListVariants: Variants = {
   show: { transition: { staggerChildren: 0.05 } },
 };
 
+const heroSectionVariants: Variants = {
+  hidden: { clipPath: "inset(0 100% 0 0)" },
+  show: {
+    clipPath: "inset(0 0% 0 0)",
+    transition: { duration: 0.85, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+const heroSvgVariants: Variants = {
+  hidden: { scaleY: 1.18, y: -12 },
+  show: {
+    scaleY: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 180,
+      damping: 18,
+      mass: 0.9,
+      delay: 0.15,
+    },
+  },
+};
+
+const GLITCH_DELAY_MS = 1300;
+const GLITCH_DURATION = 0.32;
+const GLITCH_RED = {
+  x: [0, -38, 26, -42, 18, -8, 14, 0],
+  y: [0, 4, -3, 2, -4, 1, 0, 0],
+  opacity: [0, 1, 1, 0.95, 1, 0.7, 0.4, 0],
+  times: [0, 0.04, 0.14, 0.28, 0.46, 0.66, 0.86, 1],
+};
+const GLITCH_GREEN = {
+  x: [0, 32, -28, 36, -14, 6, -10, 0],
+  y: [0, -3, 4, -2, 3, -1, 0, 0],
+  opacity: [0, 1, 1, 1, 0.9, 0.6, 0.3, 0],
+  times: [0, 0.06, 0.18, 0.32, 0.5, 0.7, 0.88, 1],
+};
+const GLITCH_BLUE = {
+  x: [0, -16, 44, -30, 24, -4, 8, 0],
+  y: [0, 3, -4, 1, -2, 1, 0, 0],
+  opacity: [0, 1, 1, 0.95, 1, 0.65, 0.35, 0],
+  times: [0, 0.05, 0.16, 0.3, 0.48, 0.68, 0.87, 1],
+};
+
 const articleRowVariants: Variants = {
   hidden: { opacity: 0, x: -40 },
   show: {
@@ -65,7 +117,55 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   const [searchParams] = useSearchParams();
   const nyan = searchParams.has("nyan");
   const heroLabel = nyan ? "nyan.cat" : "yunineko/cat";
+  const introReady = useIntroReady();
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const redX = useMotionValue(0);
+  const redY = useMotionValue(0);
+  const redOpacity = useMotionValue(0);
+  const greenX = useMotionValue(0);
+  const greenY = useMotionValue(0);
+  const greenOpacity = useMotionValue(0);
+  const blueX = useMotionValue(0);
+  const blueY = useMotionValue(0);
+  const blueOpacity = useMotionValue(0);
+
+  useEffect(() => {
+    if (!introReady) return;
+    const t = setTimeout(() => {
+      const opts = { duration: GLITCH_DURATION, ease: "linear" as const };
+      animate(redX, GLITCH_RED.x, { ...opts, times: GLITCH_RED.times });
+      animate(redY, GLITCH_RED.y, { ...opts, times: GLITCH_RED.times });
+      animate(redOpacity, GLITCH_RED.opacity, {
+        ...opts,
+        times: GLITCH_RED.times,
+      });
+      animate(greenX, GLITCH_GREEN.x, { ...opts, times: GLITCH_GREEN.times });
+      animate(greenY, GLITCH_GREEN.y, { ...opts, times: GLITCH_GREEN.times });
+      animate(greenOpacity, GLITCH_GREEN.opacity, {
+        ...opts,
+        times: GLITCH_GREEN.times,
+      });
+      animate(blueX, GLITCH_BLUE.x, { ...opts, times: GLITCH_BLUE.times });
+      animate(blueY, GLITCH_BLUE.y, { ...opts, times: GLITCH_BLUE.times });
+      animate(blueOpacity, GLITCH_BLUE.opacity, {
+        ...opts,
+        times: GLITCH_BLUE.times,
+      });
+    }, GLITCH_DELAY_MS);
+    return () => clearTimeout(t);
+  }, [
+    introReady,
+    redX,
+    redY,
+    redOpacity,
+    greenX,
+    greenY,
+    greenOpacity,
+    blueX,
+    blueY,
+    blueOpacity,
+  ]);
   const [audioUnlocked, setAudioUnlocked] = useState(false);
 
   const worksBannerRef = useRef<HTMLDivElement>(null);
@@ -137,13 +237,23 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       ) : null}
 
       {/* ── HERO ── */}
-      <section className="hero-block" aria-label={heroLabel}>
-        <svg
+      <motion.section
+        className="hero-block"
+        aria-label={heroLabel}
+        variants={heroSectionVariants}
+        initial="hidden"
+        animate={introReady ? "show" : "hidden"}
+      >
+        <motion.svg
           className="hero-svg"
           viewBox="0 0 1000 150"
           preserveAspectRatio="xMidYMid slice"
           role="img"
           aria-label={heroLabel}
+          variants={heroSvgVariants}
+          initial="hidden"
+          animate={introReady ? "show" : "hidden"}
+          style={{ originY: 1, transformOrigin: "center bottom" }}
         >
           <text
             x="500"
@@ -159,6 +269,50 @@ export default function Home({ loaderData }: Route.ComponentProps) {
           >
             {heroLabel}
           </text>
+          <g aria-hidden="true">
+            <motion.text
+              x="500"
+              y="146"
+              textAnchor="middle"
+              textLength="1000"
+              lengthAdjust="spacingAndGlyphs"
+              className="font-compressed"
+              fontSize="200"
+              fontWeight="900"
+              fill="#ff0000"
+              style={{ x: redX, y: redY, opacity: redOpacity }}
+            >
+              {heroLabel}
+            </motion.text>
+            <motion.text
+              x="500"
+              y="146"
+              textAnchor="middle"
+              textLength="1000"
+              lengthAdjust="spacingAndGlyphs"
+              className="font-compressed"
+              fontSize="200"
+              fontWeight="900"
+              fill="#00ff00"
+              style={{ x: greenX, y: greenY, opacity: greenOpacity }}
+            >
+              {heroLabel}
+            </motion.text>
+            <motion.text
+              x="500"
+              y="146"
+              textAnchor="middle"
+              textLength="1000"
+              lengthAdjust="spacingAndGlyphs"
+              className="font-compressed"
+              fontSize="200"
+              fontWeight="900"
+              fill="#0000ff"
+              style={{ x: blueX, y: blueY, opacity: blueOpacity }}
+            >
+              {heroLabel}
+            </motion.text>
+          </g>
           <text
             x="500"
             y="146"
@@ -172,8 +326,8 @@ export default function Home({ loaderData }: Route.ComponentProps) {
           >
             {heroLabel}
           </text>
-        </svg>
-      </section>
+        </motion.svg>
+      </motion.section>
 
       {/* ── NAV ── */}
       <Nav />
