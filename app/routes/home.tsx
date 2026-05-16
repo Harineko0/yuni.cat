@@ -19,6 +19,8 @@ import { ScrollMountain } from "../components/ScrollMountain";
 import { BackgroundLogoMarquee } from "../components/BackgroundLogoMarquee";
 import { GlitchTitle } from "../components/GlitchTitle";
 import { SprayNoise } from "../components/SprayNoise";
+import { Typewriter } from "../components/Typewriter";
+import { WorksCarousel } from "../components/WorksCarousel";
 
 export function meta({ location }: Route.MetaArgs) {
   const nyan = new URLSearchParams(location.search).has("nyan");
@@ -58,6 +60,20 @@ const articleListVariants: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.05 } },
 };
+
+const ABOUT_LINES = [
+  "Student at University of Osaka, Faculty of Engineering Science, Department of Information Science",
+  "Web, Mobile, Backend Software Engineer at startup companies",
+  "Ex-Organizer, Google Developer Group on Campus University of Osaka",
+  "anti-OOP",
+];
+const TYPE_SPEED = 0.01;
+const LINE_GAP = 0.08;
+const ABOUT_DELAYS = ABOUT_LINES.reduce<number[]>((acc, line, i) => {
+  const prev = i === 0 ? 0 : acc[i - 1]! + ABOUT_LINES[i - 1]!.length * TYPE_SPEED + LINE_GAP;
+  acc.push(prev);
+  return acc;
+}, []);
 
 const heroSectionVariants: Variants = {
   hidden: { clipPath: "inset(0 100% 0 0)" },
@@ -118,6 +134,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   const nyan = searchParams.has("nyan");
   const heroLabel = nyan ? "nyan.cat" : "yunineko/cat";
   const introReady = useIntroReady();
+  const [glitchDone, setGlitchDone] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const redX = useMotionValue(0);
@@ -153,7 +170,14 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         times: GLITCH_BLUE.times,
       });
     }, GLITCH_DELAY_MS);
-    return () => clearTimeout(t);
+    const tDone = setTimeout(
+      () => setGlitchDone(true),
+      GLITCH_DELAY_MS + GLITCH_DURATION * 1000,
+    );
+    return () => {
+      clearTimeout(t);
+      clearTimeout(tDone);
+    };
   }, [
     introReady,
     redX,
@@ -343,15 +367,21 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         >
           About
         </motion.h2>
-        <div className="about-body font-hand">
-          <p>
-            Student at University of Osaka, Faculty of Engineering Science,
-            Department of Information Science
-          </p>
-          <p>Web, Mobile, Backend Software Engineer at startup companies</p>
-          <p>Ex-Organizer, Google Developer Group on Campus University of Osaka</p>
-          <p>anti-OOP</p>
-        </div>
+        <motion.div
+          className="about-body font-hand"
+          initial="hidden"
+          animate={glitchDone ? "show" : "hidden"}
+        >
+          {ABOUT_LINES.map((line, i) => (
+            <p key={i}>
+              <Typewriter
+                text={line}
+                delay={ABOUT_DELAYS[i]}
+                speed={TYPE_SPEED}
+              />
+            </p>
+          ))}
+        </motion.div>
         <div className="mountain-wrap">
           <ScrollCat />
           {nyan ? (
@@ -390,52 +420,8 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             </motion.span>
           </motion.div>
         </div>
-        <div className="works-list">
-          {works.map((w, idx) => (
-            <motion.div
-              key={w._id}
-              className="works-list-item"
-              initial={{ opacity: 0, y: 80, rotate: idx % 2 === 0 ? -3 : 3 }}
-              whileInView={{ opacity: 1, y: 0, rotate: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ type: "spring", stiffness: 220, damping: 22 }}
-            >
-              <motion.div
-                whileHover={{ y: -10, rotate: -1.4 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: "spring", stiffness: 320, damping: 22 }}
-              >
-                <Link to={`/works/${w.slug}`} className="work-card">
-                  <span className="work-item-title font-compressed">
-                    {w.title}
-                    {w.year ? ` (${w.year})` : ""}
-                  </span>
-                  {w.coverImageUrl ? (
-                    <motion.img
-                      src={w.coverImageUrl}
-                      alt={w.coverImage?.alt ?? w.title}
-                      className="work-thumb"
-                      loading="lazy"
-                      whileHover={{ scale: 1.06 }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 280,
-                        damping: 24,
-                      }}
-                    />
-                  ) : null}
-                  {w.summary ? (
-                    <p className="work-summary font-jp">{w.summary}</p>
-                  ) : null}
-                </Link>
-              </motion.div>
-            </motion.div>
-          ))}
-          {works.length === 0 ? (
-            <p className="font-jp" style={{ color: "#888" }}>
-              準備中…
-            </p>
-          ) : null}
+        <div className="works-carousel-wrap">
+          <WorksCarousel works={works} />
         </div>
       </section>
 

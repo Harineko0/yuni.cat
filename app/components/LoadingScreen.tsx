@@ -3,8 +3,8 @@ import { AnimatePresence, motion } from "motion/react";
 import { markIntroReady } from "../lib/use-intro-ready";
 
 const STEP_COUNT = 9;
-const STEP_INTERVAL = 0.12;
-const HOLD_AFTER_LAST = 0.35;
+const STEP_INTERVAL = 0.072;
+const HOLD_AFTER_LAST = 0.21;
 
 export function LoadingScreen() {
   const [visible, setVisible] = useState(true);
@@ -34,7 +34,7 @@ export function LoadingScreen() {
           className="loading-screen"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.45, ease: [0.32, 0.72, 0, 1] }}
+          transition={{ duration: 0.27, ease: [0.32, 0.72, 0, 1] }}
           aria-hidden="true"
         >
           <div className="loading-footsteps">
@@ -51,7 +51,7 @@ export function LoadingScreen() {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{
                     delay: i * STEP_INTERVAL,
-                    duration: 0.2,
+                    duration: 0.12,
                     ease: "easeOut",
                   }}
                 />
