@@ -37,6 +37,14 @@ export default function WorksIndex({ loaderData }: Route.ComponentProps) {
                     {w.title}
                     {w.year ? ` (${w.year})` : ""}
                   </span>
+                  {w.coverImageUrl ? (
+                    <img
+                      src={w.coverImageUrl}
+                      alt={w.coverImage?.alt ?? w.title}
+                      className="work-thumb"
+                      loading="lazy"
+                    />
+                  ) : null}
                   {w.summary ? <p className="work-summary font-jp">{w.summary}</p> : null}
                 </Link>
               ))

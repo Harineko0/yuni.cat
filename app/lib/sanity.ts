@@ -60,6 +60,7 @@ export type Work = {
   url?: string;
   repo?: string;
   coverImage?: SanityImage;
+  coverImageUrl?: string;
   body?: PortableTextBlock[];
 };
 
@@ -74,12 +75,15 @@ export const queries = {
     _id, title, "slug": slug.current, excerpt, publishedAt, readingTime, tags, coverImage, body
   }`,
   latestWorks: /* groq */ `*[_type == "work"] | order(year desc, _createdAt desc)[0...$limit]{
-    _id, title, "slug": slug.current, summary, year, role, tech, url, repo, coverImage
+    _id, title, "slug": slug.current, summary, year, role, tech, url, repo,
+    coverImage, "coverImageUrl": coverImage.asset->url
   }`,
   allWorks: /* groq */ `*[_type == "work"] | order(year desc, _createdAt desc){
-    _id, title, "slug": slug.current, summary, year, role, tech, url, repo, coverImage
+    _id, title, "slug": slug.current, summary, year, role, tech, url, repo,
+    coverImage, "coverImageUrl": coverImage.asset->url
   }`,
   workBySlug: /* groq */ `*[_type == "work" && slug.current == $slug][0]{
-    _id, title, "slug": slug.current, summary, year, role, tech, url, repo, coverImage, body
+    _id, title, "slug": slug.current, summary, year, role, tech, url, repo,
+    coverImage, "coverImageUrl": coverImage.asset->url, body
   }`,
 };

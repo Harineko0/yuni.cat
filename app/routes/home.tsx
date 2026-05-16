@@ -3,6 +3,7 @@ import type { Route } from "./+types/home";
 import { fetchLatestPosts, fetchLatestWorks } from "../lib/content.server";
 import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
+import { ScrollCat } from "../components/ScrollCat";
 
 export function meta() {
   return [
@@ -85,7 +86,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
           <p>anti-OOP</p>
         </div>
         <div className="mountain-wrap">
-          <img src="/cat.svg" alt="" className="cat" aria-hidden="true" />
+          <ScrollCat />
           <img src="/mountain.svg" alt="" className="mountain" aria-hidden="true" />
         </div>
       </section>
@@ -102,6 +103,14 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                 {w.title}
                 {w.year ? ` (${w.year})` : ""}
               </span>
+              {w.coverImageUrl ? (
+                <img
+                  src={w.coverImageUrl}
+                  alt={w.coverImage?.alt ?? w.title}
+                  className="work-thumb"
+                  loading="lazy"
+                />
+              ) : null}
               {w.summary ? <p className="work-summary font-jp">{w.summary}</p> : null}
             </Link>
           ))}
