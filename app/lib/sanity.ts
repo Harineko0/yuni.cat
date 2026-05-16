@@ -78,7 +78,7 @@ export const queries = {
   }`,
   latestWorks: /* groq */ `*[_type == "work"] | order(year desc, _createdAt desc)[0...$limit]{
     _id, title, "slug": slug.current, summary, year, role, tech, url, repo,
-    coverImage, "coverImageUrl": coverImage.asset->url
+    coverImage, "coverImageUrl": coverImage.asset->url, body
   }`,
   allWorks: /* groq */ `*[_type == "work"] | order(year desc, _createdAt desc){
     _id, title, "slug": slug.current, summary, year, role, tech, url, repo,

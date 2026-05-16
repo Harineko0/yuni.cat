@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import { motion } from "motion/react";
 import type { Work } from "../lib/sanity";
+import { WorkHoverCard } from "./WorkHoverCard";
 
 type Props = {
   works: Work[];
@@ -19,6 +20,7 @@ function centerInStrip(strip: HTMLDivElement, el: HTMLElement, smooth: boolean) 
 
 export function WorksCarousel({ works }: Props) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const cardsStripRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const thumbStripRef = useRef<HTMLDivElement>(null);
@@ -79,7 +81,13 @@ export function WorksCarousel({ works }: Props) {
                 whileHover={{ y: -10, rotate: -1.4 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 320, damping: 22 }}
-                onMouseEnter={() => setActiveIndex(i)}
+                onMouseEnter={() => {
+                  setActiveIndex(i);
+                  setHoveredIndex(i);
+                }}
+                onMouseLeave={() =>
+                  setHoveredIndex((prev) => (prev === i ? null : prev))
+                }
                 onFocus={() => setActiveIndex(i)}
               >
                 <Link to={`/works/${w.slug}`} className="work-card">
@@ -146,6 +154,10 @@ export function WorksCarousel({ works }: Props) {
           })}
         </div>
       </div>
+
+      <WorkHoverCard
+        work={hoveredIndex !== null ? (works[hoveredIndex] ?? null) : null}
+      />
     </div>
   );
 }
