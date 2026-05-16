@@ -9,6 +9,7 @@ import { MotionConfig } from "motion/react";
 
 import type { Route } from "./+types/root";
 import { RouteTransition } from "./components/RouteTransition";
+import { LoadingScreen } from "./components/LoadingScreen";
 import { buildMeta } from "./lib/meta";
 import "./app.css";
 
@@ -55,6 +56,7 @@ export default function App() {
       reducedMotion="user"
       transition={{ type: "spring", stiffness: 260, damping: 28 }}
     >
+      <LoadingScreen />
       <RouteTransition />
     </MotionConfig>
   );

@@ -1,12 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router";
-import { motion, type Variants } from "motion/react";
+import { motion, useScroll, useTransform, type Variants } from "motion/react";
 import type { Route } from "./+types/home";
 import { fetchLatestPosts, fetchLatestWorks } from "../lib/content.server";
 import { buildMeta } from "../lib/meta";
 import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
 import { ScrollCat } from "../components/ScrollCat";
+import { ScrollMountain } from "../components/ScrollMountain";
+import { BackgroundLogoMarquee } from "../components/BackgroundLogoMarquee";
+import { GlitchTitle } from "../components/GlitchTitle";
+import { SprayNoise } from "../components/SprayNoise";
 
 export function meta({ location }: Route.MetaArgs) {
   const nyan = new URLSearchParams(location.search).has("nyan");
@@ -42,21 +46,6 @@ function formatDate(iso: string) {
   return `${y}/${m}/${day}`;
 }
 
-const workListVariants: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.09, delayChildren: 0.05 } },
-};
-
-const workItemVariants: Variants = {
-  hidden: { opacity: 0, y: 60, rotate: -2 },
-  show: {
-    opacity: 1,
-    y: 0,
-    rotate: 0,
-    transition: { type: "spring", stiffness: 240, damping: 24 },
-  },
-};
-
 const articleListVariants: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.05 } },
@@ -78,6 +67,22 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   const heroLabel = nyan ? "nyan.cat" : "yunineko/cat";
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [audioUnlocked, setAudioUnlocked] = useState(false);
+
+  const worksBannerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: worksBannerProgress } = useScroll({
+    target: worksBannerRef,
+    offset: ["start end", "end center"],
+  });
+  const worksBannerX = useTransform(
+    worksBannerProgress,
+    [0, 1],
+    ["-110%", "0%"],
+  );
+  const worksBannerRotate = useTransform(
+    worksBannerProgress,
+    [0, 1],
+    [-6, -1.2],
+  );
 
   useEffect(() => {
     if (!nyan) return;
@@ -209,36 +214,38 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               <img src="/nyancat_original.gif" alt="" aria-hidden="true" />
             </button>
           ) : null}
-          <img
-            src="/mountain.svg"
-            alt=""
-            className="mountain"
-            aria-hidden="true"
-          />
+          <ScrollMountain />
         </div>
       </section>
 
       {/* ── WORKS ── */}
       <section className="works-block">
-        <div className="works-banner">
-          <motion.span
-            className="works-title font-compacta"
-            style={{ display: "inline-block" }}
-            animate={{ rotate: [-1.2, -2.6, -1.2] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        <BackgroundLogoMarquee label={heroLabel} />
+        <div ref={worksBannerRef} className="works-banner-track">
+          <motion.div
+            className="works-banner"
+            style={{ x: worksBannerX, rotate: worksBannerRotate }}
           >
-            Works
-          </motion.span>
+            <motion.span
+              className="works-title font-compacta"
+              style={{ display: "inline-block" }}
+              animate={{ rotate: [-1.2, -2.6, -1.2] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            >
+              Works
+            </motion.span>
+          </motion.div>
         </div>
-        <motion.div
-          className="works-list"
-          variants={workListVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-10% 0px" }}
-        >
-          {works.map((w) => (
-            <motion.div key={w._id} variants={workItemVariants}>
+        <div className="works-list">
+          {works.map((w, idx) => (
+            <motion.div
+              key={w._id}
+              className="works-list-item"
+              initial={{ opacity: 0, y: 80, rotate: idx % 2 === 0 ? -3 : 3 }}
+              whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ type: "spring", stiffness: 220, damping: 22 }}
+            >
               <motion.div
                 whileHover={{ y: -10, rotate: -1.4 }}
                 whileTap={{ scale: 0.98 }}
@@ -275,11 +282,12 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               準備中…
             </p>
           ) : null}
-        </motion.div>
+        </div>
       </section>
 
       {/* ── ARTICLES (spray transition baked-in) ── */}
       <section id="articles" className="articles-block">
+        <SprayNoise className="articles-spray" />
         <motion.h2
           className="articles-title font-compressed"
           initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)" }}
@@ -287,7 +295,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
           viewport={{ once: true, margin: "-15% 0px" }}
           transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
         >
-          Articles
+          <GlitchTitle text="Articles" />
         </motion.h2>
         <motion.ul
           className="articles-list"
