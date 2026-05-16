@@ -2,12 +2,13 @@ import {
   isRouteErrorResponse,
   Links,
   Meta,
-  Outlet,
   Scripts,
   ScrollRestoration,
 } from "react-router";
+import { MotionConfig } from "motion/react";
 
 import type { Route } from "./+types/root";
+import { RouteTransition } from "./components/RouteTransition";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [
@@ -45,7 +46,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <MotionConfig
+      reducedMotion="user"
+      transition={{ type: "spring", stiffness: 260, damping: 28 }}
+    >
+      <RouteTransition />
+    </MotionConfig>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
