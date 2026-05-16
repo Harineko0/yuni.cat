@@ -32,6 +32,13 @@
     background: var(--color-lime);
     color: #000;
   }
+
+  @media (pointer: fine) {
+    body.magnetic-cursor-on,
+    body.magnetic-cursor-on * {
+      cursor: none !important;
+    }
+  }
 }
 
 @layer components {
