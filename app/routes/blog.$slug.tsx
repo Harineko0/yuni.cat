@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { motion, type Variants } from "motion/react";
 import type { Route } from "./+types/blog.$slug";
 import { fetchPostBySlug } from "../lib/content.server";
+import { renderMarkdown } from "../lib/markdown.server";
 import { buildMeta } from "../lib/meta";
 import { MarkdownRenderer } from "../components/MarkdownRenderer";
 import { Footer } from "../components/Footer";
@@ -26,7 +27,8 @@ export async function loader({ context, params }: Route.LoaderArgs) {
   const env = context.cloudflare.env as unknown as Record<string, string | undefined>;
   const post = await fetchPostBySlug(env, params.slug);
   if (!post) throw data("Post not found", { status: 404 });
-  return { post };
+  const bodyHtml = post.body ? await renderMarkdown(post.body) : null;
+  return { post, bodyHtml };
 }
 
 function formatDate(iso: string) {
@@ -52,7 +54,7 @@ const tagVariants: Variants = {
 };
 
 export default function BlogDetail({ loaderData }: Route.ComponentProps) {
-  const { post } = loaderData;
+  const { post, bodyHtml } = loaderData;
 
   return (
     <>
@@ -128,8 +130,8 @@ export default function BlogDetail({ loaderData }: Route.ComponentProps) {
         </header>
 
         <FadeUp className="page-prose font-jp" delay={0.2}>
-          {post.body ? (
-            <MarkdownRenderer value={post.body} />
+          {bodyHtml ? (
+            <MarkdownRenderer html={bodyHtml} />
           ) : (
             <p style={{ color: "#888" }}>準備中…</p>
           )}

@@ -2,6 +2,7 @@ import { Link, data } from "react-router";
 import { motion, type Variants } from "motion/react";
 import type { Route } from "./+types/works.$slug";
 import { fetchWorkBySlug } from "../lib/content.server";
+import { renderMarkdown } from "../lib/markdown.server";
 import { buildMeta } from "../lib/meta";
 import { MarkdownRenderer } from "../components/MarkdownRenderer";
 import { Footer } from "../components/Footer";
@@ -23,7 +24,8 @@ export async function loader({ context, params }: Route.LoaderArgs) {
   const env = context.cloudflare.env as unknown as Record<string, string | undefined>;
   const work = await fetchWorkBySlug(env, params.slug);
   if (!work) throw data("Work not found", { status: 404 });
-  return { work };
+  const bodyHtml = work.body ? await renderMarkdown(work.body) : null;
+  return { work, bodyHtml };
 }
 
 const chipListVariants: Variants = {
@@ -42,7 +44,7 @@ const chipVariants: Variants = {
 };
 
 export default function WorkDetail({ loaderData }: Route.ComponentProps) {
-  const { work } = loaderData;
+  const { work, bodyHtml } = loaderData;
   return (
     <>
       <main className="page-shell">
@@ -150,8 +152,8 @@ export default function WorkDetail({ loaderData }: Route.ComponentProps) {
         </header>
 
         <FadeUp className="page-prose font-jp" delay={0.2}>
-          {work.body ? (
-            <MarkdownRenderer value={work.body} />
+          {bodyHtml ? (
+            <MarkdownRenderer html={bodyHtml} />
           ) : (
             <p style={{ color: "#888" }}>準備中…</p>
           )}
