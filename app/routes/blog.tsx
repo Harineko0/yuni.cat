@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { motion, type Variants } from "motion/react";
 import type { Route } from "./+types/blog";
 import { fetchAllPosts } from "../lib/content.server";
-import { buildMeta } from "../lib/meta";
+import { buildMeta, ogImageUrl } from "../lib/meta";
 import { Footer } from "../components/Footer";
 
 export function meta() {
@@ -10,6 +10,8 @@ export function meta() {
     title: "Articles · yuni.cat",
     description: "Articles and notes by Harineko.",
     path: "/blog",
+    image: ogImageUrl("blog"),
+    imageAlt: "Articles · yuni.cat",
   });
 }
 

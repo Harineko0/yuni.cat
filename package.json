@@ -25,7 +25,8 @@
     "react-dom": "^19.2.6",
     "react-router": "7.15.1",
     "shiki": "^4.0.2",
-    "three": "^0.184.0"
+    "three": "^0.184.0",
+    "workers-og": "^0.0.27"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.29.1",

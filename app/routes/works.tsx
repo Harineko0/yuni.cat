@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { motion, type Variants } from "motion/react";
 import type { Route } from "./+types/works";
 import { fetchAllWorks } from "../lib/content.server";
-import { buildMeta } from "../lib/meta";
+import { buildMeta, ogImageUrl } from "../lib/meta";
 import { Footer } from "../components/Footer";
 import { TiltCard } from "../components/motion/TiltCard";
 
@@ -11,6 +11,8 @@ export function meta() {
     title: "Works · yuni.cat",
     description: "Selected works by Harineko.",
     path: "/works",
+    image: ogImageUrl("works"),
+    imageAlt: "Works · yuni.cat",
   });
 }
 

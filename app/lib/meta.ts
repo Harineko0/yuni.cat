@@ -4,6 +4,13 @@ export const DEFAULT_OGP_IMAGE = `${SITE_URL}/ogp.png`;
 export const DEFAULT_OGP_IMAGE_WIDTH = 2560;
 export const DEFAULT_OGP_IMAGE_HEIGHT = 1360;
 export const DEFAULT_OGP_IMAGE_ALT = "yuni.cat — Harineko's portfolio";
+export const DYNAMIC_OGP_WIDTH = 1200;
+export const DYNAMIC_OGP_HEIGHT = 630;
+
+export function ogImageUrl(kind: "blog" | "works", slug?: string) {
+  const path = slug ? `/og/${kind}/${slug}.png` : `/og/${kind}.png`;
+  return `${SITE_URL}${path}`;
+}
 
 export type BuildMetaInput = {
   title: string;
@@ -23,8 +30,13 @@ export function buildMeta(input: BuildMetaInput) {
   const image = input.image ?? DEFAULT_OGP_IMAGE;
   const imageAlt = input.imageAlt ?? DEFAULT_OGP_IMAGE_ALT;
   const isDefaultImage = image === DEFAULT_OGP_IMAGE;
-  const width = input.imageWidth ?? (isDefaultImage ? DEFAULT_OGP_IMAGE_WIDTH : undefined);
-  const height = input.imageHeight ?? (isDefaultImage ? DEFAULT_OGP_IMAGE_HEIGHT : undefined);
+  const isDynamicOg = image.startsWith(`${SITE_URL}/og/`);
+  const width =
+    input.imageWidth ??
+    (isDefaultImage ? DEFAULT_OGP_IMAGE_WIDTH : isDynamicOg ? DYNAMIC_OGP_WIDTH : undefined);
+  const height =
+    input.imageHeight ??
+    (isDefaultImage ? DEFAULT_OGP_IMAGE_HEIGHT : isDynamicOg ? DYNAMIC_OGP_HEIGHT : undefined);
   const imageType = image.endsWith(".png")
     ? "image/png"
     : image.endsWith(".jpg") || image.endsWith(".jpeg")

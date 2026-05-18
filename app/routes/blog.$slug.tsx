@@ -3,7 +3,7 @@ import { motion, type Variants } from "motion/react";
 import type { Route } from "./+types/blog.$slug";
 import { fetchPostBySlug } from "../lib/content.server";
 import { renderMarkdown } from "../lib/markdown.server";
-import { buildMeta } from "../lib/meta";
+import { buildMeta, ogImageUrl } from "../lib/meta";
 import { MarkdownRenderer } from "../components/MarkdownRenderer";
 import { Footer } from "../components/Footer";
 import { FadeUp } from "../components/motion/FadeUp";
@@ -16,8 +16,8 @@ export function meta({ data: d, params }: Route.MetaArgs) {
     description: d.post.excerpt ?? `${d.post.title} — an article on yuni.cat.`,
     path: `/blog/${params.slug}`,
     type: "article",
-    image: d.post.coverImageUrl,
-    imageAlt: d.post.coverImage?.alt ?? d.post.title,
+    image: ogImageUrl("blog", params.slug),
+    imageAlt: d.post.title,
     publishedTime: d.post.publishedAt,
     tags: d.post.tags,
   });

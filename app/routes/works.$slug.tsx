@@ -3,7 +3,7 @@ import { motion, type Variants } from "motion/react";
 import type { Route } from "./+types/works.$slug";
 import { fetchWorkBySlug } from "../lib/content.server";
 import { renderMarkdown } from "../lib/markdown.server";
-import { buildMeta } from "../lib/meta";
+import { buildMeta, ogImageUrl } from "../lib/meta";
 import { MarkdownRenderer } from "../components/MarkdownRenderer";
 import { Footer } from "../components/Footer";
 import { FadeUp } from "../components/motion/FadeUp";
@@ -15,8 +15,8 @@ export function meta({ data: d, params }: Route.MetaArgs) {
     description: d.work.summary ?? `${d.work.title} — a work on yuni.cat.`,
     path: `/works/${params.slug}`,
     type: "article",
-    image: d.work.coverImageUrl,
-    imageAlt: d.work.coverImage?.alt ?? d.work.title,
+    image: ogImageUrl("works", params.slug),
+    imageAlt: d.work.title,
   });
 }
 
